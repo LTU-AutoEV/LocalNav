@@ -11,8 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
     sensor_msgs
 )
 
-
-
 # Declare that this catkin package's runtime dependencies
 catkin_package(
     CATKIN_DEPENDS
@@ -26,11 +24,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 
 # define executables
 add_executable(pointcloud2gridmap src/pointcloud2gridmap.cpp)
-add_dependencies(pointcloud2gridmap ${catkin_EXPORTED_TARGETS})
+add_dependencies(pointcloud2gridmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(gridmap2costmap src/gridmap2costmap.cpp)
-add_dependencies(gridmap2costmap ${catkin_EXPORTED_TARGETS})
-
-# define executable not using any messages/services provided by this package
-#add_executable(does_not_use_local_messages_program src/main.cpp)
-#add_dependencies(does_not_use_local_messages_program ${catkin_EXPORTED_TARGETS})
+add_dependencies(gridmap2costmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
