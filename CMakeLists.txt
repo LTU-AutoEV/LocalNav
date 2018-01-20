@@ -25,8 +25,8 @@ catkin_package(
 include_directories(${catkin_INCLUDE_DIRS})
 
 # define executables
-add_executable(pointclout2gridmap src/pointclout2gridmap.cpp)
-add_dependencies(pointclout2gridmap ${catkin_EXPORTED_TARGETS})
+add_executable(pointcloud2gridmap src/pointcloud2gridmap.cpp)
+add_dependencies(pointcloud2gridmap ${catkin_EXPORTED_TARGETS})
 
 add_executable(gridmap2costmap src/gridmap2costmap.cpp)
 add_dependencies(gridmap2costmap ${catkin_EXPORTED_TARGETS})
