@@ -4,6 +4,12 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <grid_map_msgs/GridMap.h>
 
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl_ros/point_cloud.h>
+#include <pcl/PCLPointCloud2.h>
+#include <grid_map_pcl/grid_map_pcl.hpp>
+#include <grid_map_ros/grid_map_ros.hpp>
+
 /*PCloud2GMap 
  *
  * Converts the PointCloud2 data from the velodyne Lidar
@@ -39,6 +45,15 @@ PCloud2GMap::PCloud2GMap(){
 }
 
 void PCloud2GMap::CloudCallback(const sensor_msgs::PointCloud2& cloud){
+   pcl::PolygonMesh poly_mesh;
+   pcl_conversions::toPCL(cloud, poly_mesh.cloud);
+
+   grid_map::GridMap map;
+   grid_map::GridMapPclConverter::initializeFromPolygonMesh(poly_mesh, 0.05, map);
+
+    grid_map_msgs::GridMap msg;
+    grid_map::GridMapRosConverter::toMessage(map, msg);
+    pub_.publish(msg);
 
 } 
 
