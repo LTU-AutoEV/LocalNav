@@ -1,6 +1,5 @@
 #include <ros/ros.h>
 #include "grid_map_core/GridMap.hpp"
-#include "grid_map_costmap_2d/grid_map_costmap_2d.hpp"
 #include "grid_map_msgs/GridMap.h"
 #include "grid_map_ros/grid_map_ros.hpp"
 
@@ -25,7 +24,6 @@ private:
     // ROS objects
     ros::NodeHandle nh_;
     ros::Subscriber gm_sub_;
-    tf::TransformListener tf_;
     ros::Publisher pub_;
 };
 
