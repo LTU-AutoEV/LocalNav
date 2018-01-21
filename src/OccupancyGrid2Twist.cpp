@@ -11,6 +11,13 @@ public:
 private:
     void OGridCallback(const nav_msgs::OccupancyGrid& grid);
 
+    bool check_forward();
+    bool check_right();
+    bool check_left();
+
+    uint32_t pos_x;
+    uint32_t pos_y;
+
     ros::NodeHandle nh_;
     ros::Subscriber sub_;
     ros::Publisher pub_;
@@ -24,7 +31,24 @@ OGrid2Twist::OGrid2Twist(){
 }
 
 void OGrid2Twist::OGridCallback(const nav_msgs::OccupancyGrid& grid){
-    //????????
+   
+   if ((grid.info.width == 0) || (grid.info.height == 0)){
+       return;
+   }
+
+   pos_x = grid.info.width / 2;
+   pos_y = grid.info.height / 2;
+
+   if (check_forward()){
+
+   } else if (check_right()){
+
+   } else if (check_left()){
+
+   } else {
+       
+   }
+
 }
 
 void main(int argc, char** argv){
