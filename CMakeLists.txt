@@ -12,6 +12,7 @@ find_package(catkin
     sensor_msgs
     pcl_ros
     grid_map_ros
+    grid_map_pcl
 )
 
 # Declare that this catkin package's runtime dependencies
@@ -23,6 +24,7 @@ catkin_package(
     sensor_msgs
     grid_map_ros
     pcl_ros
+    grid_map_pcl
 )
 
 include_directories(${catkin_INCLUDE_DIRS})
@@ -34,4 +36,4 @@ add_dependencies(gridmap2costmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORT
 add_dependencies(pointcloud2gridmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(gridmap2costmap ${catkin_LIBRARIES})
-target_link_libraries(pointcloud2gridmap ${catkin_LIBRARIES} grid_map_pcl)
+target_link_libraries(pointcloud2gridmap ${catkin_LIBRARIES})
