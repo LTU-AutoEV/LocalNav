@@ -1,0 +1,7 @@
+<launch>
+  <include file="$(find smf1_gazebo)/launch/mybot_world.launch" />
+
+  <node name="pointcloud2gridmap" pkg="LocalNav" type="pointcloud2gridmap"  />
+  <node name="gridmap2costmap" pkg="LocalNav" type="gridmap2costmap"  />
+  <node name="tf" pkg="static_transform_publisher" type="tf" args="0 0 0 0 0 0 1 footprint my_frame 10" />
+</launch>
