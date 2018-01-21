@@ -33,7 +33,7 @@ GridMap2CostMap::GridMap2CostMap()
     :nh_("~")
 {
 
-    gm_sub_  = nh_.subscribe("grid_map", 10, &GridMap2CostMap::gmCallback, this);
+    gm_sub_  = nh_.subscribe("/pointcloud2gridmap/grid_map", 10, &GridMap2CostMap::gmCallback, this);
     pub_ = nh_.advertise<nav_msgs::OccupancyGrid>("occupancy_grid", 10);
 }
 
@@ -45,7 +45,7 @@ void GridMap2CostMap::gmCallback(const grid_map_msgs::GridMap& msg)
 
     // Convert to OccupancyGrid msg.
     nav_msgs::OccupancyGrid occupancyGrid;
-    grid_map::GridMapRosConverter::toOccupancyGrid(gm, "layer", 0.0, 1.0, occupancyGrid);
+    grid_map::GridMapRosConverter::toOccupancyGrid(gm, "elevation", 0.1, 1.0, occupancyGrid);
 
     pub_.publish(occupancyGrid);
 }
