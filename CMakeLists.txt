@@ -13,7 +13,8 @@ find_package(catkin
     pcl_ros
     grid_map_ros
     grid_map_pcl
-)
+    pcl_conversions
+    )
 
 # Declare that this catkin package's runtime dependencies
 catkin_package(
@@ -25,9 +26,17 @@ catkin_package(
     grid_map_ros
     pcl_ros
     grid_map_pcl
+    pcl_conversions
+    DEPENDS
+    PCL
 )
 
-include_directories(${catkin_INCLUDE_DIRS})
+find_package(PCL REQUIRED COMPONENTS common surface kdtree)
+
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+include_directories(${catkin_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
 
 add_executable(gridmap2costmap src/gridmap2costmap.cpp)
 add_executable(pointcloud2gridmap src/pointcloud2gridmap.cpp)
@@ -36,4 +45,4 @@ add_dependencies(gridmap2costmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORT
 add_dependencies(pointcloud2gridmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(gridmap2costmap ${catkin_LIBRARIES})
-target_link_libraries(pointcloud2gridmap ${catkin_LIBRARIES})
+target_link_libraries(pointcloud2gridmap ${PCL_LIBRARIES} ${catkin_LIBRARIES})
