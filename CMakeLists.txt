@@ -45,4 +45,4 @@ add_dependencies(gridmap2costmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORT
 add_dependencies(pointcloud2gridmap ${PROJECT_NAME}_gencfg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(gridmap2costmap ${catkin_LIBRARIES})
-target_link_libraries(pointcloud2gridmap ${catkin_LIBRARIES} pcl_common pcl_surface pcl_kdtree pcl_ml)
+target_link_libraries(pointcloud2gridmap ${PCL_LIBRARIES} ${catkin_LIBRARIES})
