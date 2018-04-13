@@ -1,8 +1,8 @@
 #include <iostream>
 #include <ros/ros.h>
 #include <grid_map_msgs/GridMap.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <sensor_msgs/PointCloud2.h>
-#include <grid_map_pcl/grid_map_pcl.hpp>
 #include <grid_map_ros/grid_map_ros.hpp>
 #include <pcl/PCLPointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -12,6 +12,10 @@
 #include <pcl/surface/mls.h>
 #include <pcl/surface/gp3.h>
 #include <cmath>
+
+constexpr int hieght = 3;
+constexpr int length = 4;
+constexpr int width = 3;
 
 /*PCloud2GMap
  *
@@ -43,7 +47,7 @@ PCloud2GMap::PCloud2GMap()
     nh_ = ros::NodeHandle("~");
 
     // publish on /grid_map
-    pub_ = nh_.advertise<grid_map_msgs::GridMap>("grid_map", 100);
+    pub_ = nh_.advertise<nav_msgs::OccupancyGrid>("grid_map", 100);
     // subscribe to the pointcloud2 data comming from the lidar
     sub_ = nh_.subscribe("/velodyne_points", 100, &PCloud2GMap::CloudCallback, this);
 }
@@ -51,6 +55,31 @@ PCloud2GMap::PCloud2GMap()
 void
 PCloud2GMap::CloudCallback(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud)
 {
+
+    nav_msgs::OccupancyGrid grid;
+
+    grid.info.resolution = cloud->fields;
+    grid.info.height = cloud->height;
+    grid.info.width = cloud->width;
+    grid.info.map_load_time = ros::Time::now();
+
+    //TODO find ground plane
+    //TODO rotate data points
+    
+    //truncate data points not within car hieght
+
+    for (auto& p : cloud->points){
+        //is zero correct?
+        if (p.z < hieght && p.z > 0){
+            grid.data[p.x  + p.x * p.y] = 100;
+        }
+    }
+
+    pub_.publish(grid);
+
+    //send message (occupancy grid)
+
+    /*
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     tree->setInputCloud(cloud);
 
@@ -122,6 +151,7 @@ PCloud2GMap::CloudCallback(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud
     grid_map_msgs::GridMap msg;
     grid_map::GridMapRosConverter::toMessage(map, msg);
     pub_.publish(msg);
+    */
 }
 
 int
