@@ -51,6 +51,7 @@ void Occupancy2Object::gmCallback(const nav_msgs::OccupancyGrid& grid)
 
     float res = grid.info.resolution;
 
+    //search reagion centered on the car
     int search_width_in_cells = std::ceil(search_witdth * res);
     
     //make sure the search region is not bigger than the search space
@@ -66,7 +67,7 @@ void Occupancy2Object::gmCallback(const nav_msgs::OccupancyGrid& grid)
     for (auto i = 0; i <= mid_y; ++i){
         for (auto j = 0; j < search_width_in_cells; ++j){
             int offset = mid_x - search_width_in_cells/2;
-            if (grid.data[( j ) + (mid_y - i)*grid.info.width] > 0){
+            if (grid.data[(offset + j) + (mid_y - i)*grid.info.width] > 0){
                 //x and y are swapped
                 closest.x = i * res;
                 closest.y = j * res;

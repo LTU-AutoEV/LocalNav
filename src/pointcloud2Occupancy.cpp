@@ -11,6 +11,7 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/surface/mls.h>
 #include <pcl/surface/gp3.h>
+#include "/velodyne/rawdata.h"
 #include <cmath>
 
 constexpr int hieght = 3;
@@ -33,7 +34,7 @@ public:
 
 private:
     // Callback
-    void CloudCallback(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &);
+    void CloudCallback(const velodyne_rawdata::VPointCloud::Ptr &);
 
     ros::NodeHandle nh_;
     ros::Publisher  pub_;
@@ -53,12 +54,12 @@ PCloud2GMap::PCloud2GMap()
 }
 
 void
-PCloud2GMap::CloudCallback(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud)
+PCloud2GMap::CloudCallback(const velodyne_rawdata::VPointCloud::Ptr &cloud)
 {
 
     nav_msgs::OccupancyGrid grid;
 
-    grid.info.resolution = cloud->fields;
+    grid.info.resolution = cloud.field.resolution;
     grid.info.height = cloud->height;
     grid.info.width = cloud->width;
     grid.info.map_load_time = ros::Time::now();
@@ -68,7 +69,7 @@ PCloud2GMap::CloudCallback(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud
     
     //truncate data points not within car hieght
 
-    for (auto& p : cloud->points){
+    for (auto& p : cloud.points){
         //is zero correct?
         if (p.z < hieght && p.z > 0){
             grid.data[p.x  + p.x * p.y] = 100;
