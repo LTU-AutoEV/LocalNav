@@ -1,7 +1,4 @@
 #include <ros/ros.h>
-#include "grid_map_core/GridMap.hpp"
-#include "grid_map_msgs/GridMap.h"
-#include "grid_map_ros/grid_map_ros.hpp"
 
 #include <nav_msgs/OccupancyGrid.h>
 #include <geometry_msgs/Point.h>
@@ -44,7 +41,7 @@ void Occupancy2Object::gmCallback(const nav_msgs::OccupancyGrid& grid)
 {
     //If an object is with this field stop the car
     //values in meters
-    constexpr float search_witdth = 2.0f;
+    const float search_witdth = 2.0f;
 
     int mid_y = grid.info.height/2;
     int mid_x = grid.info.width/2;
