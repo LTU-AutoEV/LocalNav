@@ -58,11 +58,6 @@ include_directories(
   ${PCL_INCLUDE_DIRS}
 )
 
-add_executable(cloud2grid src/pointcloud2Occupancy.cpp)
-add_dependencies(cloud2grid ${PROJECT_NAME}_gencfg)
-target_link_libraries(cloud2grid ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS})
-
-add_executable(grid2detect src/Occupancy2ObjectDetect.cpp)
-add_dependencies(grid2detect ${PROJECT_NAME}_gencfg)
-target_link_libraries(grid2detect ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS})
-
+add_executable(obstacle_loc src/obstacle_loc.cpp)
+add_dependencies(obstacle_loc ${PROJECT_NAME}_gencfg)
+target_link_libraries(obstacle_loc ${catkin_LIBRARIES} ${PCL_INCLUDE_DIRS})

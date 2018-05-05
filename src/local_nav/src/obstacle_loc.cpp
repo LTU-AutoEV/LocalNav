@@ -16,7 +16,7 @@
 using actor_cloud_t = pcl::PointCloud<pcl::PointXYZ>;
 using actor_cloud_ptr_t = actor_cloud_t::Ptr;
 
-/*PCloud2GMap
+/*obstacle_loc
  *
  * Converts the PointCloud2 data from the velodyne Lidar
  *  into a grid_map
@@ -25,10 +25,10 @@ using actor_cloud_ptr_t = actor_cloud_t::Ptr;
  *
  * Subscrivbe:  PointCloud2 on "/velodyne_points"
  */
-class PCloud2GMap {
+class obstacle_loc {
 
 public:
-    PCloud2GMap();
+    obstacle_loc();
 
 private:
     void TransformToBase(actor_cloud_ptr_t& out, actor_cloud_ptr_t& in);
@@ -49,7 +49,7 @@ private:
 
 // constructor
 //  set up publisher and subscriber
-PCloud2GMap::PCloud2GMap()
+obstacle_loc::obstacle_loc()
 {
     //We only care about points within 
     // Z E {0,..,z_max}
@@ -65,10 +65,10 @@ PCloud2GMap::PCloud2GMap()
     //pub_ = nh_.advertise<geometry_msgs::Point>("/obstacle_loc", 10);
     pub_ = nh_.advertise<geometry_msgs::PointStamped>("/obstacle_loc", 10);
     // subscribe to the pointcloud2 data comming from the lidar
-    sub_ = nh_.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 100, &PCloud2GMap::CloudCallback, this);
+    sub_ = nh_.subscribe<sensor_msgs::PointCloud2>("/velodyne_points", 100, &obstacle_loc::CloudCallback, this);
 }
 
-bool PCloud2GMap::WithinThreshold(const float& x, const float& y, const float& z ){
+bool obstacle_loc::WithinThreshold(const float& x, const float& y, const float& z ){
 
  
     if (z < z_max){
@@ -82,7 +82,7 @@ bool PCloud2GMap::WithinThreshold(const float& x, const float& y, const float& z
     return false;
 }
 
-void PCloud2GMap::CloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
+void obstacle_loc::CloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
 {
 
     // velodyne publishes 
@@ -135,7 +135,7 @@ void PCloud2GMap::CloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
 }
 
 
-void PCloud2GMap::TransformToBase(actor_cloud_ptr_t& out, actor_cloud_ptr_t& in)
+void obstacle_loc::TransformToBase(actor_cloud_ptr_t& out, actor_cloud_ptr_t& in)
 {
     //find ground plane (http://pointclouds.org/documentation/tutorials/planar_segmentation.php)
     pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients());
@@ -183,7 +183,7 @@ int
 main(int argc, char **argv)
 {
     ros::init(argc, argv, "pointcloud2gridmap");
-    PCloud2GMap PCloud2GMap;
+    obstacle_loc obstacle_loc;
 
     ros::spin();
 }
