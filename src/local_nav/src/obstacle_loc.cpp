@@ -71,9 +71,9 @@ obstacle_loc::obstacle_loc()
 bool obstacle_loc::WithinThreshold(const float& x, const float& y, const float& z ){
 
  
-    if (z < z_max){
+    if (z <= z_max && z >= 0){
         if (x >= x_min && x <= x_max){
-            if (y > -(width/2) && y < (width/2)){
+            if (y >= -(width/2) && y <= (width/2)){
                 return true;
             }
         }
