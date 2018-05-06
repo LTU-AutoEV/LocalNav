@@ -41,10 +41,12 @@ private:
     ros::Publisher  pub_;
     ros::Subscriber sub_;
 
-    float z_max; //the roof of the car
+    float z_min; //the roof of the car
+    float z_max;
     float x_min;
     float x_max;
-    float width; 
+    float y_min;
+    float y_max; 
 };
 
 // constructor
@@ -52,13 +54,15 @@ private:
 obstacle_loc::obstacle_loc()
 {
     //We only care about points within 
-    // Z E {0,..,z_max}
+    // Z E {z_min,..,z_max}
     // X E {x_min,...,x_max}
-    // Y E {-width/2,...,width/2}
-    z_max = 2.0f; //TODO add to dynamic reconfigure
+    // Y E {y_min,...,y_max}
+    z_min = -2.0; //TODO add to dynamic reconfigure
+    z_max = 0.0f; //TODO add to dynamic reconfigure
     x_min = 1.0f; //TODO add to dynamic reconfigure
     x_max = 5.0f; //TODO add to dynamic reconfigure
-    width = 2.0f; //TODO add to dynamic reconfigure 
+    y_min = -1.0f; //TODO add to dynamic reconfigure
+    y_max = 1.0f; //TODO add to dynamic reconfigure
 
     nh_ = ros::NodeHandle("~");
     // publish on ~/obstacle_loc
@@ -71,9 +75,9 @@ obstacle_loc::obstacle_loc()
 bool obstacle_loc::WithinThreshold(const float& x, const float& y, const float& z ){
 
  
-    if (z <= z_max && z >= 0){
+    if (z >= z_min && z <= z_max){
         if (x >= x_min && x <= x_max){
-            if (y >= -(width/2) && y <= (width/2)){
+            if (y >= y_min && y <= y_max){
                 return true;
             }
         }
