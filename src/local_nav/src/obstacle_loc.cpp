@@ -178,7 +178,7 @@ void obstacle_loc::TransformToBase(actor_cloud_ptr_t& out, actor_cloud_ptr_t& in
 
     Eigen::Affine3f transform_2 = Eigen::Affine3f::Identity();
     transform_2.rotate (Eigen::AngleAxisf (theta, rotation_vector));
-    transform_2.translation() << 0, 0, 30; //is 30 correct?
+    //transform_2.translation() << 0, 0, 0; 
     pcl::transformPointCloud (*in, *out, transform_2);
 
 }
