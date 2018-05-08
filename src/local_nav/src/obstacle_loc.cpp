@@ -112,7 +112,7 @@ void obstacle_loc::CloudCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
 
     //The ground plane and rotation may not be needed.
     //It seems like the puck is able to do it for us.    
-    TransformToBase(cloud,centeredCloud);
+    //TransformToBase(cloud,centeredCloud);
 
     geometry_msgs::PointStamped closest_point;
 
